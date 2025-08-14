@@ -126,8 +126,16 @@ def delete(id):
         flash(f"Error: {str(e)}", 'danger')
     return redirect(url_for('index'))
 
+import os
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run()
+else:
+    # When deployed (e.g. with gunicorn), run create_all()
+    with app.app_context():
+        if not os.path.exists("tasks.db"):  # or "students.db"
+            db.create_all()
+
 
